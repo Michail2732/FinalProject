@@ -11,9 +11,9 @@ using namespace std;
 namespace FinalProject
 {
 	/// <summary>
-	/// Класс почтового ящика
+	/// Класс аккаунта пользователя
 	/// </summary>
-	class Mailbox
+	class UserAccount
 	{
 		private:
 			/// <summary>
@@ -29,21 +29,27 @@ namespace FinalProject
 			/// Конструктор
 			/// </summary>
 			/// <param name="user">Пользователь</param>
-			Mailbox(User* user);
+			UserAccount(User* user);
 			/// <summary>
 			/// Конструктор копирования
 			/// </summary>
 			/// <param name="user">Пользователь</param>
-			Mailbox(const Mailbox& mailbox) = delete;
+			UserAccount(const UserAccount& mailbox) = delete;
 			/// <summary>
 			/// Диструктор
 			/// </summary>
-			~Mailbox();
+			~UserAccount();
 			/// <summary>
 			/// Геттер пользователя
 			/// </summary>
 			/// <returns></returns>
 			const User* GetUser() const noexcept;
+			/// <summary>
+			/// Проверяет пренадлежит ли аккаунт пользователю
+			/// </summary>
+			/// <param name="user"></param>
+			/// <returns></returns>
+			bool IsAccountOwner(User* user);
 			/// <summary>
 			/// Добавить сообщение в ящик
 			/// </summary>

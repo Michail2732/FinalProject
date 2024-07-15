@@ -33,7 +33,7 @@
     <ClCompile Include="ChatException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Mailbox.cpp">
+    <ClCompile Include="UserAccount.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="ChatConsoleHandler.cpp">
@@ -56,7 +56,7 @@
     <ClInclude Include="ChatException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Mailbox.h">
+    <ClInclude Include="UserAccount.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="ChatConsoleHandler.h">

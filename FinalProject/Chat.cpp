@@ -5,50 +5,50 @@ namespace FinalProject
 {
 	Chat::Chat()
 	{
-		_mailBoxes = vector<Mailbox*>();
+		_userAccounts = vector<UserAccount*>();
 		_currentUser = nullptr;
 	}	
 
 	Chat::~Chat()
 	{
-		for (int i = 0; i < _mailBoxes.size(); i++)
+		for (int i = 0; i < _userAccounts.size(); i++)
 		{
-			delete _mailBoxes[i];
+			delete _userAccounts[i];
 		}
-		_mailBoxes.clear();		
+		_userAccounts.clear();		
 	}
 
-	int Chat::GetMailboxSize() const noexcept
+	int Chat::GetUserAccountsSize() const noexcept
 	{
-		return _mailBoxes.size();
+		return _userAccounts.size();
 	}
 
-	const Mailbox* Chat::operator[](int index) const throw()
+	const UserAccount* Chat::operator[](int index) const throw()
 	{
-		if (index < 0 || index >= _mailBoxes.size())
+		if (index < 0 || index >= _userAccounts.size())
 			throw out_of_range("Выход за пределы списка почтовых ящиков");
-		return _mailBoxes[index];
+		return _userAccounts[index];
 	}
 
 
 	void Chat::RegisterUser(User* user) throw()
 	{
-		for (int i = 0; i < _mailBoxes.size(); i++)
+		for (int i = 0; i < _userAccounts.size(); i++)
 		{
-			if ((*_mailBoxes[i]).GetUser()->GetName() == user->GetName())
+			if ((*_userAccounts[i]).GetUser()->GetName() == user->GetName())
 				throw ChatException();
 		}
-		_mailBoxes.push_back(new Mailbox(user));		
+		_userAccounts.push_back(new UserAccount(user));		
 	}
 
 	void Chat::UnregisterUser(string& username) throw()
 	{
 
-		for (auto iter { _mailBoxes.begin()}; iter != _mailBoxes.end(); ++iter)
+		for (auto iter { _userAccounts.begin()}; iter != _userAccounts.end(); ++iter)
 		{
 			if ((*iter)->GetUser()->GetName() == username)
 			{
-				_mailBoxes.erase(iter);
+				_userAccounts.erase(iter);
 				return;
 			}				
 		}
@@ -57,11 +57,11 @@ namespace FinalProject
 
 	bool Chat::SignIn(UserLogin& login)
 	{				
-		for (int i = 0; i < _mailBoxes.size(); i++)
+		for (int i = 0; i < _userAccounts.size(); i++)
 		{			
-			if (_mailBoxes[i]->GetUser()->TryLogin(login))
+			if (_userAccounts[i]->GetUser()->TryLogin(login))
 			{				
-				_currentUser = (User*)_mailBoxes[i]->GetUser();
+				_currentUser = (User*)_userAccounts[i]->GetUser();
 				return true;
 			}
 		}		
@@ -74,15 +74,15 @@ namespace FinalProject
 			throw ChatException();
 		if (message.GetIsToAll())
 		{
-			for (int i = 0; i < _mailBoxes.size(); i++)			
-				_mailBoxes[i]->AddMessage(message);										
+			for (int i = 0; i < _userAccounts.size(); i++)			
+				_userAccounts[i]->AddMessage(message);										
 		}
 		else
 		{
-			for (int i = 0; i < _mailBoxes.size(); i++)
+			for (int i = 0; i < _userAccounts.size(); i++)
 			{
-				if (_mailBoxes[i]->GetUser()->GetName() == message.GetTo())
-					_mailBoxes[i]->AddMessage(message);
+				if (_userAccounts[i]->GetUser()->GetName() == message.GetTo())
+					_userAccounts[i]->AddMessage(message);
 			}
 		}			
 	}
@@ -96,6 +96,18 @@ namespace FinalProject
 	User* Chat::GetCurrentUser() const noexcept
 	{
 		return _currentUser;
+	}
+
+	UserAccount* Chat::GetCurrentUserAccount() throw()
+	{
+		if (_currentUser == nullptr)
+			return nullptr;
+		for (int i = 0; i < _userAccounts.size(); i++)
+		{
+			if (_userAccounts[i]->IsAccountOwner(_currentUser))
+				return _userAccounts[i];
+		}
+		throw logic_error("Ошибка логики работы программы");
 	}
 
 }

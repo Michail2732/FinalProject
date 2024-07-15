@@ -27,6 +27,14 @@ namespace FinalProject
 			/// </summary>
 			void SendMessageHandle();
 			/// <summary>
+			/// Обработчик списка сообщений текущего пользователя
+			/// </summary>
+			void GetMessagesHandler();
+			/// <summary>
+			/// Обработчик текущего пользователя
+			/// </summary>
+			void GetCurrentUserHandler();
+			/// <summary>
 			/// Обработчик входа в чат
 			/// </summary>
 			void SignInHandle();

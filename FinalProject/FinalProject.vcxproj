@@ -132,7 +132,7 @@
     <ClCompile Include="ChatException.cpp" />
     <ClCompile Include="FinalProject.cpp" />
     <ClCompile Include="Message.cpp" />
-    <ClCompile Include="Mailbox.cpp" />
+    <ClCompile Include="UserAccount.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserLogin.cpp" />
   </ItemGroup>
@@ -141,7 +141,7 @@
     <ClInclude Include="ChatConsoleHandler.h" />
     <ClInclude Include="ChatException.h" />
     <ClInclude Include="Message.h" />
-    <ClInclude Include="Mailbox.h" />
+    <ClInclude Include="UserAccount.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UserLogin.h" />
   </ItemGroup>

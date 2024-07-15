@@ -3,86 +3,130 @@
 
 namespace FinalProject
 {
-	void ChatConsoleHandler::RegisterUserHandle()
+	void ClearConsoleBuffer()
 	{
-		char needBreak;
+		if (std::cin.fail()) 		
+			std::cin.clear();		
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	}
+
+	void ChatConsoleHandler::RegisterUserHandle()
+	{		
+		ClearConsoleBuffer();
 		string login, password, name;		
 		cout << "Введите имя пользователя: ";
-		cin >> name;
+		cin >> name;		
+		ClearConsoleBuffer();
 		cout << "Введите логин пользователя: ";
-		cin >> login;
+		cin >> login;		
+		ClearConsoleBuffer();
 		cout << "Введите пароль пользователя: ";
-		cin >> password;		
+		cin >> password;				
 
 		User* newUser = new User(login, password, name);
 		_chat->RegisterUser(newUser);
-		
+		cout << "Пользователь '" << name << "' зарегистрирован в чате!" << endl<<endl;
 	}
 
 	void ChatConsoleHandler::UnregisterUserHandle()
 	{
-
+		ClearConsoleBuffer();
 		string userName;
 		cout << "Введите имя пользователя: ";
-		cin >> userName;
+		cin >> userName;		
 		
 		_chat->UnregisterUser(userName);		
+		cout << "Пользователь успешно удалён!" << endl << endl;
 	}
 
 	void ChatConsoleHandler::SendMessageHandle()
-	{
+	{		
 		if (_chat->GetCurrentUser() == nullptr)
 		{
-			cout << "Для отправки сообщений нужно войти в чат" << endl;
+			cout << "Вы не вошли в чат!" << endl << endl;
 			return;
 		}			
 		string to, text, from;
-		cout << "Введите имя получателя (all - для отправки всем)";
-		cin >> to;
-		cout << "Введите текст сообщения: " << endl;
-		cin >> text;
-					
+		cout << "Введите имя получателя (all - для отправки всем): ";
+		cin >> to;		
+		ClearConsoleBuffer();
+		cout << "Введите текст сообщения (Не более 100 символов): " << endl;		
+		getline(cin, text, '\n');
 		from = _chat->GetCurrentUser()->GetName();
 		if (to == "all")
 		{
 			Message m{ text, from };
-			_chat->SendMessage(m);
+			_chat->SendMessage(m);			
 		}
 		else
 		{
 			Message m{ text, from, to };
 			_chat->SendMessage(m);
 		}					
+		cout << "Сообщение успешно отправлено!" << endl << endl;
 	}
 
-	void ChatConsoleHandler::SignInHandle()
+	void ChatConsoleHandler::GetMessagesHandler()
 	{
-		string login, password;
-		cout << "Введите логин: ";
-		cin >> login;
-		cout << "Введите пароль: ";
-		cin >> password;
-		UserLogin us{ login, password };
-		_chat->SignIn(us);
+		if (_chat->GetCurrentUser() == nullptr)
+		{
+			cout << "Вы не вошли в чат!" << endl << endl;
+			return;
+		}
+		cout << "Сообщения:" << endl;
+		UserAccount* userAccount = _chat->GetCurrentUserAccount();
+		for (int i = 0; i < userAccount->MessagesCount(); i++)
+		{
+			cout << (*userAccount)[i];
+		}
+		cout << endl;
 	}
 
-	void ChatConsoleHandler::SignOutHandle()
+	void ChatConsoleHandler::GetCurrentUserHandler()
 	{
 		if (_chat->GetCurrentUser() == nullptr)
 		{
 			cout << "Вы не вошли в чат!" << endl;
 			return;
 		}
+		cout << "Текущий пользователь: " << endl;
+		cout << *_chat->GetCurrentUser() << endl;
+	}
+
+	void ChatConsoleHandler::SignInHandle()
+	{
+		ClearConsoleBuffer();
+		string login, password;
+		cout << "Введите логин: ";
+		cin >> login;		
+		cout << "Введите пароль: ";
+		cin >> password;		
+		UserLogin us{ login, password };
+		if (_chat->SignIn(us))
+			cout << "Вы успешно вошли в чат!" << endl << endl;
+		else
+			cout << "Неверный логин или пароль!" << endl << endl;
+	}
+
+	void ChatConsoleHandler::SignOutHandle()
+	{
+		if (_chat->GetCurrentUser() == nullptr)
+		{
+			cout << "Вы не вошли в чат!" << endl << endl;
+			return;
+		}
 		_chat->SignOut();
+		cout << "Вы успешно вышли из чата!" << endl << endl;
 	}
 
 	void ChatConsoleHandler::GetUsersHandle()
 	{
-		cout << "Список пользователей" << endl;		
-		for (int i = 0; i < _chat->GetMailboxSize(); i++)
+		cout << "Список пользователей:" << endl;		
+		for (int i = 0; i < _chat->GetUserAccountsSize(); i++)
 		{
-			cout << *((*_chat)[i]->GetUser()) << endl;
+			cout << *((*_chat)[i]->GetUser());
 		}
+		cout << endl;
 	}
 
 	ChatConsoleHandler::ChatConsoleHandler(Chat* chat)
@@ -117,6 +161,8 @@ namespace FinalProject
 					cout << "\tsignin - войти в чат" << endl;
 					cout << "\tsignout - выйти из чата" << endl;
 					cout << "\tsend - отправить сообщение" << endl;
+					cout << "\tmsgs - список сообщений пользователя" << endl;
+					cout << "\tcrntu - текуший пользователь" << endl;
 				}
 				else if (command == "exit")
 				{
@@ -135,6 +181,10 @@ namespace FinalProject
 					SignOutHandle();
 				else if (command == "send")
 					SendMessageHandle();
+				else if (command == "msgs")
+					GetMessagesHandler();
+				else if (command == "crntu")
+					GetCurrentUserHandler();
 				else
 					cout << "Неизвестная команда!" << endl;
 			}
