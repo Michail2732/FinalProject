@@ -3,7 +3,7 @@
 #include "User.h"
 #include "UserLogin.h"
 #include "Message.h"
-#include "Mailbox.h"
+#include "UserAccount.h"
 #include "ChatException.h"
 
 using namespace std;
@@ -17,9 +17,9 @@ namespace FinalProject
 	{
 		private:
 			/// <summary>
-			/// Список почтовых ящиков
+			/// Список аккаунтов пользователя
 			/// </summary>
-			vector<Mailbox*> _mailBoxes;
+			vector<UserAccount*> _userAccounts;
 			/// <summary>
 			/// Текущий пользователь
 			/// </summary>
@@ -38,16 +38,16 @@ namespace FinalProject
 			/// </summary>
 			~Chat();
 			/// <summary>
-			/// Возвращает колличество почтовых ящиков
+			/// Возвращает колличество аккаунтов пользователя
 			/// </summary>
 			/// <returns></returns>
-			int GetMailboxSize() const noexcept;
+			int GetUserAccountsSize() const noexcept;
 			/// <summary>
-			/// индексатор почтовых ящиков
+			/// индексатор аккаунтов пользователя
 			/// </summary>
 			/// <param name="index">индекс</param>
 			/// <returns></returns>
-			const Mailbox* operator[](int index) const throw();
+			const UserAccount* operator[](int index) const throw();
 			/// <summary>
 			/// Зарегистрировать пользователя в чате
 			/// </summary>
@@ -81,6 +81,11 @@ namespace FinalProject
 			/// </summary>
 			/// <returns></returns>
 			User* GetCurrentUser() const noexcept;
+			/// <summary>
+			/// Возвращает  текущего 
+			/// </summary>
+			/// <returns></returns>
+			UserAccount* GetCurrentUserAccount() throw();
 	};
 
 }

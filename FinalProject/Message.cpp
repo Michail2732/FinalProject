@@ -52,8 +52,10 @@ namespace FinalProject
 
 	ostream& operator<<(ostream& os, const Message& message)
 	{
+		os << "------------------------"<<endl;
 		os << "Отправитель: " << message.GetFrom() << endl << "Получатель: " << message.GetTo() << endl
 			<< "Сообщение: " << endl << message.GetText() << endl;
+		os << "------------------------" << endl;
 		return os;
 	}
 
