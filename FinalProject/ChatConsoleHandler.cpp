@@ -144,6 +144,7 @@ namespace FinalProject
 	void ChatConsoleHandler::Start()
 	{
 		setlocale(LC_ALL, "");
+		system("chcp 1251");
 		cout << "Добро пожаловать в чат!" << endl;
 		cout << "help - список команд" << endl;
 		cout << "exit - выйти из программы" << endl;
